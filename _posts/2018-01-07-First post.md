@@ -4,7 +4,7 @@ title:      First Post
 subtitle:   未经省察的人生不值得过
 date:       2018-01-07
 author:     Jie
-header-img: img/post-bg-ios9-web.jpg
+header-img: img/post-bg-unix-linux.jpg
 catalog: true
 tags:
     - 随笔
