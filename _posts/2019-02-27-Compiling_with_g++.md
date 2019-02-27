@@ -22,14 +22,18 @@ SET ( CMAKE_CXX_FLAGS  "-Ofast -lrt -DNDEBUG -std=c++11 -DHAVE_CXX0X -march=nati
 
 多谢Kelvin帮我解决了这个问题，问题的关键在于 `-Ofast`。我们可以先用 `make VERBOSE=1` 来观察两个版本在编译的时候的区别，release 的是这样：
 ```
+
 /data/opt/brew/bin/c++   -I/data/liujie/all_hnsw/standard-ip-nsw  -Ofast -lrt -DNDEBUG -std=c++11 -DHAVE_CXX0X -march=native -fpic -w -fopenmp -ftree-vectorize -ftree-vectorizer-verbose=0 -O3 -DNDEBUG   -o CMakeFiles/main.dir/main.cpp.o -c /data/liujie/all_hnsw/standard-ip-nsw/main.cpp
+
 ```
 
 debug 的是这样：
 
 
 ```
+
 /data/opt/brew/bin/c++   -I/data/liujie/all_hnsw/standard-ip-nsw  -Ofast -lrt -DNDEBUG -std=c++11 -DHAVE_CXX0X -march=native -fpic -w -fopenmp -ftree-vectorize -ftree-vectorizer-verbose=0   -o CMakeFiles/main.dir/main.cpp.o -c /data/liujie/all_hnsw/standard-ip-nsw/main.cpp
+
 ```
 
 区别在于release版本的 `-O3` overwrite 之前的 `-Ofast`，一般来说 `-O3` 把能做的优化都做了，但是 `-Ofast` 在 `-O3` 的基础上，enable optimizations that are not valid for all standard-compliant programs，比如 `-ffast-math`，举个例子，比如我们要计算 `a/b/c/d`，我们可以换个顺序`a/(b*c*d)`，但这样输出可能和原来不一致，但由于乘法比除法快，这样会使运行速度更快。Repo 的原作者把CMAKE_CXX_FLAGS写这么一长串其实是不推荐的，更合适的写法是 
